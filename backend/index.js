@@ -20,7 +20,7 @@ AWS.config.update({
 
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'http://jawnay.github.io' 
+  origin: 'https://jawnay.github.io' 
 }));
 
 app.post('/api/text-to-audio-file', async (req, res) => {

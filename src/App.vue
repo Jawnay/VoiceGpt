@@ -32,11 +32,8 @@ const runSpeechRecognition = () => {
             let res = await axios.post('http://localhost:4001/api/text-to-audio-file', {
             text: event.results[0][0].transcript
         })
-            console.log({resDataFileName: res.data.fileName});
             if (res.data && res.data.fileName) {
             mySource.value = '/voice/' + res.data.fileName;
-            console.log({mySourceValue: mySource.value});
-            console.log({playerValue: player.value});
             // Check if the audio element exists and the source is set
             if (player.value && mySource.value) {
                 
@@ -45,7 +42,7 @@ const runSpeechRecognition = () => {
             }
         }
         } catch (err) {
-            console.log(err)
+            console.error(err)
         }
     };
     recognition.start();

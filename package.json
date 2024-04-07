@@ -2,6 +2,7 @@
   "name": "voicegptapp",
   "version": "0.0.0",
   "private": true,
+  "homepage": "https://jawnay.github.io/VoiceGpt/",
   "type": "module",
   "scripts": {
     "dev": "vite",

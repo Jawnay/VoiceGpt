@@ -28,8 +28,7 @@ const runSpeechRecognition = () => {
 
         try {
 
-            //let res = await axios.post(proccess.env.SERVER_URL + '/api/text-to-audio-file', {
-            let res = await axios.post('http://localhost:4001/api/text-to-audio-file', {
+            let res = await axios.post(process.env.VUE_APP_SERVER_URL + '/api/text-to-audio-file', {
             text: event.results[0][0].transcript
         })
             if (res.data && res.data.fileName) {

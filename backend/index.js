@@ -27,6 +27,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.options('https://jawnay.github.io', cors(corsOptions)); 
+
 app.post('/api/text-to-audio-file', async (req, res) => {
 
   try {

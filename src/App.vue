@@ -21,22 +21,31 @@ const runSpeechRecognition = () => {
         action.value = "stopped listening...";
         recognition.stop();
     }
-  
+
     recognition.onresult = async (event) => {
-      var transcript = event.results[0][0].transcript;
+        var transcript = event.results[0][0].transcript;
         output.value = transcript
 
         try {
-          let res = await axios.post('http://localhost:4001/api/text-to-audio-file', {
-            text: event.results[0][0].transcript
-          })
 
-          if (res.data) {
-            mySource.value = '/voice/' + res.data + '.mp3'
-            setTimeout(() => { player.value.play() }, 500)
-          }
+            //let res = await axios.post(proccess.env.SERVER_URL + '/api/text-to-audio-file', {
+            let res = await axios.post('http://localhost:4001/api/text-to-audio-file', {
+            text: event.results[0][0].transcript
+        })
+            console.log({resDataFileName: res.data.fileName});
+            if (res.data && res.data.fileName) {
+            mySource.value = '/voice/' + res.data.fileName;
+            console.log({mySourceValue: mySource.value});
+            console.log({playerValue: player.value});
+            // Check if the audio element exists and the source is set
+            if (player.value && mySource.value) {
+                
+                setTimeout(() => { player.value.play(); }, 500); // Delay play to ensure load completes
+                
+            }
+        }
         } catch (err) {
-          console.log(err)
+            console.log(err)
         }
     };
     recognition.start();

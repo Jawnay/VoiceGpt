@@ -19,9 +19,13 @@ AWS.config.update({
 });
 
 app.use(bodyParser.json());
-app.use(cors({
-  origin: 'https://jawnay.github.io' 
-}));
+const corsOptions = {
+  origin: 'https://jawnay.github.io',
+  methods: 'GET,POST',
+  allowedHeaders: 'Content-Type,Authorization',
+};
+
+app.use(cors(corsOptions));
 
 app.post('/api/text-to-audio-file', async (req, res) => {
 

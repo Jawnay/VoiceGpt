@@ -30,7 +30,11 @@ const runSpeechRecognition = () => {
 
             let res = await axios.post(import.meta.env.VITE_APP_SERVER_URL + '/api/text-to-audio-file', {
             text: event.results[0][0].transcript
-        })
+        },{ responseType: 'blob' })
+
+        // Create a URL for the blob
+        mySource.value = URL.createObjectURL(new Blob([response.data], { type: 'audio/mpeg' }));
+
             if (res.data && res.data.fileName) {
             mySource.value = '/voice/' + res.data.fileName;
             // Check if the audio element exists and the source is set

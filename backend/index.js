@@ -62,7 +62,8 @@ app.post('/api/text-to-audio-file', async (req, res) => {
         if (err) {
           //console.error(err);
           console.error(`Error with AWS Polly: ${err.stack}`);
-          return res.status(500).json({ error: err.message });
+          //return res.status(500).json({ error: err.message });
+          return res.send("Polly broke or something");
         }
   
         let filePath = "../public/voice/";
@@ -80,7 +81,8 @@ app.post('/api/text-to-audio-file', async (req, res) => {
     } catch (error) {
       //console.error("Error generating audio file:", error);
       console.error(`Error in POST /api/text-to-audio-file: ${error.stack}`);
-      res.status(500).json({ error: error.message });
+      return res.send("Something broke");
+      //res.status(500).json({ error: error.message });
     }
   });
   

@@ -4,7 +4,6 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-//import OpenAI from "openai";
 const OpenAI = require("openai");
 const AWS = require("aws-sdk");
 
@@ -32,13 +31,14 @@ const corsOptions = {
 };
 
 
-
 app.use(cors(corsOptions));
 
 app.options('*', cors(corsOptions)); 
 
 app.post('/api/text-to-audio-file', async (req, res) => {
 
+
+  
   console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
 
   try {

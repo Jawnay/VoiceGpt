@@ -20,7 +20,7 @@ AWS.config.update({
 
 app.use(bodyParser.json());
 const corsOptions = {
-  origin: 'https://jawnay.github.io',
+  origin: 'https://jawnay.github.io/VoiceGpt/',
   methods: 'GET,POST',
   allowedHeaders: 'Content-Type,Authorization',
 };

@@ -38,6 +38,9 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); 
 
 app.post('/api/text-to-audio-file', async (req, res) => {
+
+  return res.send("gat");
+  /*
   console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
 
   try {
@@ -48,7 +51,6 @@ app.post('/api/text-to-audio-file', async (req, res) => {
         max_tokens: 100,
         //temperature: 0.5
       });
-  
 
       const polly = new AWS.Polly();
       const params = {
@@ -80,11 +82,12 @@ app.post('/api/text-to-audio-file', async (req, res) => {
       console.error(`Error in POST /api/text-to-audio-file: ${error.stack}`);
       res.status(500).json({ error: error.message });
     }
+    */
   });
   
   // Start the server
   app.listen(4001, () => {
-    //console.log(`Server is ready at '+ proccess.env.SERVER_URL  );
+    console.log(`Server is ready at + proccess.env.SERVER_URL `);
     console.log(`Server is ready at http://localhost:4001`);
     console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
   });

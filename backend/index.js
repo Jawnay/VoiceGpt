@@ -20,14 +20,15 @@ AWS.config.update({
 
 app.use(bodyParser.json());
 const corsOptions = {
-  origin: ['https://jawnay.github.io', 'https://jawnay.github.io/VoiceGpt/', 'https://jawnay.github.io/VoiceGpt'],
+  origin: 'https://jawnay.github.io',
   methods: 'GET,POST',
   allowedHeaders: 'Content-Type,Authorization',
-  credentials: true,
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
+
+
 app.use(cors(corsOptions));
+
 app.options('*', cors(corsOptions)); 
 
 app.post('/api/text-to-audio-file', async (req, res) => {
@@ -49,27 +50,27 @@ app.post('/api/text-to-audio-file', async (req, res) => {
         VoiceId: "Matthew" 
       };
   
-    // Synthesize speech using AWS Polly
-    polly.synthesizeSpeech(params, (err, data) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).json({ error: err.message });
-      }
-
-      // Set headers to signal to the client that a stream is coming
-      res.writeHead(200, {
-        'Content-Type': 'audio/mpeg',
-        'Content-Disposition': 'attachment; filename="speech.mp3"'
+      // Synthesize speech using AWS Polly
+      polly.synthesizeSpeech(params, (err, data) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: err.message });
+        }
+  
+        let filePath = "../public/voice/";
+        let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+  
+        // Save the audio file
+        fs.writeFileSync(filePath + fileName, data.AudioStream);
+  
+        // Send the file name as a response
+        res.status(200).json({ fileName: fileName });
       });
-
-      // Stream the audio content
-      res.end(data.AudioStream);
-    });
-  } catch (error) {
-    console.error("Error generating audio file:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
+    } catch (error) {
+      console.error("Error generating audio file:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
   
   // Start the server
   app.listen(4001, () => {

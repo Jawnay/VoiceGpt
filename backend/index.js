@@ -61,7 +61,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
 
     await polly.synthesizeSpeech(params, (err, data) => {
 
-      return res.send(JSON.stringify("polly" + data));
+      return res.send(JSON.stringify(data));
 
     });
 

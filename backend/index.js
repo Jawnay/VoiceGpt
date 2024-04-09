@@ -32,51 +32,46 @@ app.use(cors({
 }));
 
 app.post('/api/text-to-audio-file', async (req, res) => {
-  
+  console.log("1");
+  //return res.send("ressadfasdg");
   console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
+
 
   try {
     // Generate a completion using OpenAI
+    console.log("2");
     const chatCompletion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: req.body.text }],
       max_tokens: 100,
       //temperature: 0.5
     });
-
+    console.log("3");
     const polly = new AWS.Polly();
     const params = {
       OutputFormat: "mp3",
       Text: chatCompletion.choices[0].message.content, 
       VoiceId: "Matthew" 
     };
+    console.log("4");
 
     console.log(chatCompletion)
-    /*
-    const data = await polly.synthesizeSpeech(params).promise();
 
-    let filePath = "../public/voice/";
-    let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+    polly.synthesizeSpeech(params, (err, data) => {
+      console.log("5");
+      if (err) {
+        console.error(err);
+      }
 
-    fs.writeFileSync(filePath + fileName, data.AudioStream);
-
-    return res.send(filePath + fileName);
-    */
-    await polly.synthesizeSpeech(params, (err, data) => {
-         if(err){
-          console.error(err);
-         }
-
-         let filePath = "../public/voice/";
-         let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
-
-         fs.writeFileSync(filePath + fileName, data.AudioStream);
-
-         return res.send(filePath + fileName);
-
+      console.log("6");
+      let filePath = "../voice/";
+      let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+      console.log("7");
+      fs.writeFileSync(filePath + fileName, data.AudioStream);
+      console.log("8");
+      return res.send(filePath + fileName);
+      
     });
-
-
 
   } catch {
     return res.send("asdfasgd");

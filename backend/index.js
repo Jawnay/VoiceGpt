@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 const corsOptions = {
-  origin: '*',
+  origin: 'http://localhost:5173',
   methods: 'GET,POST',
   allowedHeaders: 'Content-Type,Authorization',
 };
@@ -33,7 +33,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.options('*', cors(corsOptions)); 
+//app.options('*', cors(corsOptions)); 
 
 app.post('/api/text-to-audio-file', async (req, res) => {
   
@@ -59,12 +59,12 @@ app.post('/api/text-to-audio-file', async (req, res) => {
 
       await polly.synthesizeSpeech(params, (err, data) => {
 
-      let filePath = "../public/voice/";
-      let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+        let filePath = "../public/voice/";
+        let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
 
-      fs.writeFileSync(filePath + fileName, data.AudioStream);
+        fs.writeFileSync(filePath + fileName, data.AudioStream);
 
-      return res.send(filePath + fileName);
+        return res.send(filePath + fileName);
 
     });
 

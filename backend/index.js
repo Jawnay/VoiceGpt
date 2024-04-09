@@ -30,6 +30,8 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow Content-Type and other headers
 }));
 
+app.use(express.static('voice'));
+
 app.post('/api/text-to-audio-file', async (req, res) => {
   console.log("1");
   try {

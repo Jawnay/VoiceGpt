@@ -34,13 +34,14 @@ const runSpeechRecognition = () => {
             text: event.results[0][0].transcript
         })
         console.log(res);
-        console.log(res.data);
-
         if (res.data) {
             mySource.value = '/voice/' + res.data;
+            console.log(mySource.value);
+            console.log('here');
             // Check if the audio element exists and the source is set
             if (player.value && mySource.value) {
                 
+            console.log('here2');
                 setTimeout(() => { player.value.play(); }, 1000); // Delay play to ensure load completes
                 
             }

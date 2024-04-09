@@ -32,10 +32,6 @@ app.use(cors({
 
 app.post('/api/text-to-audio-file', async (req, res) => {
   console.log("1");
-  //return res.send("ressadfasdg");
-  console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
-
-
   try {
     // Generate a completion using OpenAI
     console.log("2");
@@ -63,18 +59,40 @@ app.post('/api/text-to-audio-file', async (req, res) => {
       }
 
       console.log("6");
-      let filePath = "./assets/";
+      // Update the file path to include the "voice" directory
+      let filePath = "voice/";
       let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+
+      // Check if the directory exists, if not, create it
+      if (!fs.existsSync(filePath)) {
+        fs.mkdirSync(filePath, { recursive: true }); // recursive: true ensures nested directories are created if they don't exist
+      }
+
       try {
         console.log("7");
-        fs.writeFileSync(filePath, data.AudioStream); // Corrected to just filePath
-        console.log(`File successfully saved to: ${filePath}`);
+        fs.writeFileSync(filePath + fileName, data.AudioStream);
+        console.log(`File successfully saved to: ${filePath + fileName}`);
+
         console.log("8");
-        res.send(fileName); // It's usually better to send just the fileName or a relative path
+        res.send(fileName); // Send just the fileName or a relative path
+
       } catch (writeError) {
         console.error("Error writing file:", writeError);
         return res.status(500).send("Error saving audio file");
       }
+
+    //   let filePath = "assets/";
+    //   let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+    //   try {
+    //     console.log("7");
+    //     fs.writeFileSync(filePath, data.AudioStream); // Corrected to just filePath
+    //     console.log(`File successfully saved to: ${filePath}`);
+    //     console.log("8");
+    //     res.send(fileName); // It's usually better to send just the fileName or a relative path
+    //   } catch (writeError) {
+    //     console.error("Error writing file:", writeError);
+    //     return res.status(500).send("Error saving audio file");
+    //   }
       
     });
 
@@ -82,50 +100,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
     return res.send("asdfasgd");
   }
 
-  /*
-  try {
-      // Generate a completion using OpenAI
-      const chatCompletion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: req.body.text }],
-        max_tokens: 100,
-        //temperature: 0.5
-      });
-
-      const polly = new AWS.Polly();
-      const params = {
-        OutputFormat: "mp3",
-        Text: chatCompletion.choices[0].message.content, 
-        VoiceId: "Matthew" 
-      };
   
-      // Synthesize speech using AWS Polly
-      polly.synthesizeSpeech(params, (err, data) => {
-        if (err) {
-          //console.error(err);
-          console.error(`Error with AWS Polly: ${err.stack}`);
-          //return res.status(500).json({ error: err.message });
-          return res.send("Polly broke or something");
-        }
-  
-        let filePath = "../public/voice/";
-        let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
-  4
-        // Save the audio file
-        fs.writeFileSync(filePath + fileName, data.AudioStream);
-        console.log(`Successfully created audio file: ${fileName}`);
-  
-        // Send the file name as a response
-        // res.status(200).json({ fileName: fileName });
-        return res.send(JSON.stringify({fileName: fileName }));
-        
-      });
-    } catch (error) {
-      //console.error("Error generating audio file:", error);
-      console.error(`Error in POST /api/text-to-audio-file: ${error.stack}`);
-      return res.send("Something broke");
-      //res.status(500).json({ error: error.message });
-    } */
   });
   
   // Start the server

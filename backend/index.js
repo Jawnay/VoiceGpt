@@ -30,7 +30,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow Content-Type and other headers
 }));
 
-app.use(express.static('voice'));
+app.use('/voice', express.static('voice'));
 
 app.post('/api/text-to-audio-file', async (req, res) => {
   console.log("1");
@@ -82,20 +82,6 @@ app.post('/api/text-to-audio-file', async (req, res) => {
         console.error("Error writing file:", writeError);
         return res.status(500).send("Error saving audio file");
       }
-
-    //   let filePath = "assets/";
-    //   let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
-    //   try {
-    //     console.log("7");
-    //     fs.writeFileSync(filePath, data.AudioStream); // Corrected to just filePath
-    //     console.log(`File successfully saved to: ${filePath}`);
-    //     console.log("8");
-    //     res.send(fileName); // It's usually better to send just the fileName or a relative path
-    //   } catch (writeError) {
-    //     console.error("Error writing file:", writeError);
-    //     return res.status(500).send("Error saving audio file");
-    //   }
-      
     });
 
   } catch {

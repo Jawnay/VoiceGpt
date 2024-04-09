@@ -71,10 +71,16 @@ app.post('/api/text-to-audio-file', async (req, res) => {
       console.log("6");
       let filePath = "./assets/";
       let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
-      console.log("7");
-      fs.writeFileSync(filePath, data.AudioStream);
-      console.log("8");
-      return res.send(filePath + fileName);
+      try {
+        console.log("7");
+        fs.writeFileSync(filePath, data.AudioStream); // Corrected to just filePath
+        console.log(`File successfully saved to: ${filePath}`);
+        console.log("8");
+        res.send(fileName); // It's usually better to send just the fileName or a relative path
+      } catch (writeError) {
+        console.error("Error writing file:", writeError);
+        return res.status(500).send("Error saving audio file");
+      }
       
     });
 

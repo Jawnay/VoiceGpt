@@ -9,13 +9,6 @@ const AWS = require("aws-sdk");
 const path = require('path');
 
 const voiceDir = path.join(__dirname, 'voice');
-if (!fs.existsSync(voiceDir)){
-  fs.mkdirSync(voiceDir, { recursive: true });
-  console.log(`Created directory at ${voiceDir}`);
-}
-
-
-
 const openai = new OpenAI({
   apiKey: process.env.OPEN_AI_API_KEY
   });
@@ -39,47 +32,49 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow Content-Type and other headers
 }));
 
-
+if (!fs.existsSync(voiceDir)){
+  fs.mkdirSync(voiceDir, { recursive: true });
+}
 
 app.post('/api/text-to-audio-file', async (req, res) => {
-  console.log("Received request to convert text to audio");
+  console.log("1");
+  //return res.send("ressadfasdg");
+  console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
+
+
   try {
+    // Generate a completion using OpenAI
+    console.log("2");
     const chatCompletion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: req.body.text }],
       max_tokens: 100,
       //temperature: 0.5
     });
-    console.log("Received completion from OpenAI");
+    console.log("3");
     const polly = new AWS.Polly();
     const params = {
       OutputFormat: "mp3",
       Text: chatCompletion.choices[0].message.content, 
       VoiceId: "Matthew" 
     };
+    console.log("4");
+
+    console.log(chatCompletion)
 
     polly.synthesizeSpeech(params, (err, data) => {
       console.log("5");
       if (err) {
-        console.error("Error calling Polly:", err);
-        return res.status(500).send("Error synthesizing speech");
+        console.error(err);
       }
-    
+
       console.log("6");
-      let fileName = `${Date.now()}.mp3`; // Define fileName here
-      let filePath = path.join(voiceDir, fileName); // Then use it to construct filePath
-      console.log(`Attempting to write file to: ${filePath}`); // Log the intended file path for debugging
-    
-      try {
-        console.log("7");
-        fs.writeFileSync(filePath, data.AudioStream); // Corrected to just filePath
-        console.log(`File successfully saved to: ${filePath}`);
-        console.log("8");
-        res.send(fileName); // It's usually better to send just the fileName or a relative path
-      } catch (writeError) {
-        console.error("Error writing file:", writeError);
-        return res.status(500).send("Error saving audio file");
-      }
+      let filePath = "./assets/";
+      let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+      console.log("7");
+      fs.writeFileSync(filePath + fileName, data.AudioStream);
+      console.log("8");
+      return res.send(filePath + fileName);
       
     });
 

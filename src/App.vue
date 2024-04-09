@@ -34,6 +34,7 @@ const runSpeechRecognition = () => {
             text: event.results[0][0].transcript
         })
         console.log(res);
+        console.log(res.data);
 
         if (res.data) {
             mySource.value = '/voice/' + res.data;
@@ -51,18 +52,6 @@ const runSpeechRecognition = () => {
     };
     recognition.start();
 }
-
-function toArrayBuffer(buffer) {
-  const arrayBuffer = new ArrayBuffer(buffer.length);
-  const view = new Uint8Array(arrayBuffer);
-  for (let i = 0; i < buffer.length; ++i) {
-    view[i] = buffer[i];
-  }
-  console.log(arrayBuffer);
-  return arrayBuffer;
-}
-
-
 
 </script>
 

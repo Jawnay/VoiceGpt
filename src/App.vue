@@ -11,9 +11,12 @@ let output = ref('')
 
 useAVLine(player, canvas, { src: mySource, canvHeight: 300, canvWidth: 1000, barColor: 'lime' })
 
+
+
 const runSpeechRecognition = () => {
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
     var recognition = new SpeechRecognition();
+
 
     recognition.onstart = () => { action.value = "listening, please ask your question..." };
     
@@ -27,19 +30,19 @@ const runSpeechRecognition = () => {
         output.value = transcript
 
         try {
-
             let res = await axios.post(import.meta.env.VITE_APP_SERVER_URL + '/api/text-to-audio-file', {
             text: event.results[0][0].transcript
         })
-            if (res.data && res.data.fileName) {
-            mySource.value = '/voice/' + res.data.fileName;
-            // Check if the audio element exists and the source is set
-            if (player.value && mySource.value) {
-                
-                setTimeout(() => { player.value.play(); }, 500); // Delay play to ensure load completes
-                
-            }
-        }
+
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+            console.log(res.buffer);
+            const myArrayBuffer = res.buffer
+            console.log("guys" , res.buffer);
+            const source = audioCtx.createBufferSource();
+            source.buffer = myArrayBuffer;
+            source.connect(audioCtx.destination);
+            source.start();
+
         } catch (err) {
             console.error(err)
         }

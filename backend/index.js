@@ -36,8 +36,6 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); 
 
 app.post('/api/text-to-audio-file', async (req, res) => {
-
-
   
   console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
 

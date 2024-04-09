@@ -24,11 +24,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.use(cors({
-  origin: '*', // Allows all domains, or specify like 'http://localhost:5173'
-  methods: ['GET', 'POST'], // Methods allowed
-  allowedHeaders: ['Content-Type', 'Authorization'] // Allow Content-Type and other headers
-}));
+app.use(cors());
 
 app.use('/voice', express.static('voice'));
 

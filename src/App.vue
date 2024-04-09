@@ -35,7 +35,7 @@ const runSpeechRecognition = () => {
         })
         console.log(res);
         if (res.data) {
-            mySource.value = '/voice/' + res.data;
+            mySource.value = import.meta.env.VITE_APP_SERVER_URL +'/voice/' + res.data;
             console.log(mySource.value);
             console.log('here');
             // Check if the audio element exists and the source is set

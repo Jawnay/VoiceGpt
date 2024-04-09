@@ -37,7 +37,7 @@ const runSpeechRecognition = () => {
         console.log(res.data);
 
         if (res.data) {
-            mySource.value = '/assets/' + res.data;
+            mySource.value = '/voice/' + res.data;
             // Check if the audio element exists and the source is set
             if (player.value && mySource.value) {
                 

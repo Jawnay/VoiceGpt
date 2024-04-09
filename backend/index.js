@@ -50,9 +50,21 @@ app.post('/api/text-to-audio-file', async (req, res) => {
       //temperature: 0.5
     });
 
+    const polly = new AWS.Polly();
+    const params = {
+      OutputFormat: "mp3",
+      Text: chatCompletion.choices[0].message.content, 
+      VoiceId: "Matthew" 
+    };
+
     console.log(chatCompletion)
 
-    return res.send(chatCompletion);
+    polly.synthesizeSpeech(params, (err, data) => {
+
+      return res.send(JSON.stringify("polly" + data));
+    });
+
+    return res.send("CHATGPT" + chatCompletion);
 
   } catch {
     return res.send("asdfasgd");

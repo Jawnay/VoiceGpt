@@ -59,12 +59,11 @@ app.post('/api/text-to-audio-file', async (req, res) => {
 
     console.log(chatCompletion)
 
-    polly.synthesizeSpeech(params, (err, data) => {
+    await polly.synthesizeSpeech(params, (err, data) => {
 
       return res.send(JSON.stringify("polly" + data));
-    });
 
-    return res.send("CHATGPT" + chatCompletion);
+    });
 
   } catch {
     return res.send("asdfasgd");

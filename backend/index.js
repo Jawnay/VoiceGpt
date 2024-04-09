@@ -42,6 +42,24 @@ app.post('/api/text-to-audio-file', async (req, res) => {
   console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
 
   try {
+    // Generate a completion using OpenAI
+    const chatCompletion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: req.body.text }],
+      max_tokens: 100,
+      //temperature: 0.5
+    });
+
+    console.log(chatCompletion)
+
+    return res.send(chatCompletion);
+
+  } catch {
+    return res.send("asdfasgd");
+  }
+
+  /*
+  try {
       // Generate a completion using OpenAI
       const chatCompletion = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
@@ -83,7 +101,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
       console.error(`Error in POST /api/text-to-audio-file: ${error.stack}`);
       return res.send("Something broke");
       //res.status(500).json({ error: error.message });
-    }
+    } */
   });
   
   // Start the server

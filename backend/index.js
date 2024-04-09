@@ -24,14 +24,21 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
+/*
 const corsOptions = {
   origin: 'http://localhost:5173',
   methods: 'GET,POST',
   allowedHeaders: 'Content-Type,Authorization',
 };
+*/
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Allows all domains
+  next();
+});
 
 
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
 
 //app.options('*', cors(corsOptions)); 
 

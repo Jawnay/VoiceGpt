@@ -64,7 +64,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
       }
 
       console.log("6");
-      let filePath = "../voice/";
+      let filePath = "./voice/";
       let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
       console.log("7");
       fs.writeFileSync(filePath + fileName, data.AudioStream);

@@ -6,9 +6,7 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 const OpenAI = require("openai");
 const AWS = require("aws-sdk");
-const path = require('path');
 
-const voiceDir = path.join(__dirname, 'voice');
 const openai = new OpenAI({
   apiKey: process.env.OPEN_AI_API_KEY
   });
@@ -31,10 +29,6 @@ app.use(cors({
   methods: ['GET', 'POST'], // Methods allowed
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow Content-Type and other headers
 }));
-
-if (!fs.existsSync(voiceDir)){
-  fs.mkdirSync(voiceDir, { recursive: true });
-}
 
 app.post('/api/text-to-audio-file', async (req, res) => {
   console.log("1");

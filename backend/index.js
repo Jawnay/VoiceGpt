@@ -52,7 +52,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
     };
 
     console.log(chatCompletion)
-
+    /*
     const data = await polly.synthesizeSpeech(params).promise();
 
     let filePath = "../public/voice/";
@@ -61,19 +61,20 @@ app.post('/api/text-to-audio-file', async (req, res) => {
     fs.writeFileSync(filePath + fileName, data.AudioStream);
 
     return res.send(filePath + fileName);
-    //   await polly.synthesizeSpeech(params, (err, data) => {
-    //     if(err){
-    //       console.error(err);
-    //     }
+    */
+    await polly.synthesizeSpeech(params, (err, data) => {
+         if(err){
+          console.error(err);
+         }
 
-    //     let filePath = "../public/voice/";
-    //     let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+         let filePath = "../public/voice/";
+         let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
 
-    //     fs.writeFileSync(filePath + fileName, data.AudioStream);
+         fs.writeFileSync(filePath + fileName, data.AudioStream);
 
-    //     return res.send(filePath + fileName);
+         return res.send(filePath + fileName);
 
-    // });
+    });
 
 
 

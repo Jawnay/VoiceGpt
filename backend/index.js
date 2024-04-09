@@ -28,35 +28,36 @@ app.use(cors());
 
 app.use('/voice', express.static('voice'));
 
+app.get('/api/proxy-audio/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = `voice/${filename}`;
+
+  // Stream the audio file from the 'voice' directory
+  const fileStream = fs.createReadStream(filePath);
+  fileStream.pipe(res);
+});
+
 app.post('/api/text-to-audio-file', async (req, res) => {
-  console.log("1");
   try {
     // Generate a completion using OpenAI
-    console.log("2");
     const chatCompletion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: req.body.text }],
       max_tokens: 100,
       //temperature: 0.5
     });
-    console.log("3");
     const polly = new AWS.Polly();
     const params = {
       OutputFormat: "mp3",
       Text: chatCompletion.choices[0].message.content, 
       VoiceId: "Matthew" 
     };
-    console.log("4");
-
-    console.log(chatCompletion)
 
     polly.synthesizeSpeech(params, (err, data) => {
-      console.log("5");
       if (err) {
         console.error(err);
       }
 
-      console.log("6");
       // Update the file path to include the "voice" directory
       let filePath = "voice/";
       let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
@@ -67,11 +68,9 @@ app.post('/api/text-to-audio-file', async (req, res) => {
       }
 
       try {
-        console.log("7");
         fs.writeFileSync(filePath + fileName, data.AudioStream);
         console.log(`File successfully saved to: ${filePath + fileName}`);
 
-        console.log("8");
         res.send(fileName); // Send just the fileName or a relative path
 
       } catch (writeError) {
@@ -83,8 +82,6 @@ app.post('/api/text-to-audio-file', async (req, res) => {
   } catch {
     return res.send("asdfasgd");
   }
-
-  
   });
   
   // Start the server

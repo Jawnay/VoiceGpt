@@ -14,7 +14,7 @@ useAVLine(player, canvas, { src: mySource, canvHeight: 300, canvWidth: 1000, bar
 
 
 const runSpeechRecognition = () => {
-    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     var recognition = new SpeechRecognition();
 
 
@@ -35,13 +35,10 @@ const runSpeechRecognition = () => {
         })
         console.log(res);
         if (res.data) {
-            mySource.value = import.meta.env.VITE_APP_SERVER_URL +'/voice/' + res.data;
-            console.log(mySource.value);
-            console.log('here');
+            mySource.value = import.meta.env.VITE_APP_SERVER_URL +'/api/proxy-audio/' + res.data;
             // Check if the audio element exists and the source is set
             if (player.value && mySource.value) {
                 
-            console.log('here2');
                 setTimeout(() => { player.value.play(); }, 1000); // Delay play to ensure load completes
                 
             }

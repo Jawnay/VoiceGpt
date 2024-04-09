@@ -33,15 +33,17 @@ const runSpeechRecognition = () => {
             let res = await axios.post(import.meta.env.VITE_APP_SERVER_URL + '/api/text-to-audio-file', {
             text: event.results[0][0].transcript
         })
+        console.log(res);
 
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-            console.log(res.buffer);
-            const myArrayBuffer = res.buffer
-            console.log("guys" , res.buffer);
-            const source = audioCtx.createBufferSource();
-            source.buffer = myArrayBuffer;
-            source.connect(audioCtx.destination);
-            source.start();
+        if (res.data && res.data) {
+            mySource.value = '/voice/' + res.data;
+            // Check if the audio element exists and the source is set
+            if (player.value && mySource.value) {
+                
+                setTimeout(() => { player.value.play(); }, 1000); // Delay play to ensure load completes
+                
+            }
+        }
 
         } catch (err) {
             console.error(err)
@@ -49,6 +51,18 @@ const runSpeechRecognition = () => {
     };
     recognition.start();
 }
+
+function toArrayBuffer(buffer) {
+  const arrayBuffer = new ArrayBuffer(buffer.length);
+  const view = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < buffer.length; ++i) {
+    view[i] = buffer[i];
+  }
+  console.log(arrayBuffer);
+  return arrayBuffer;
+}
+
+
 
 </script>
 

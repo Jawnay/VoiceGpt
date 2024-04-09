@@ -57,9 +57,14 @@ app.post('/api/text-to-audio-file', async (req, res) => {
 
     console.log(chatCompletion)
 
-    await polly.synthesizeSpeech(params, (err, data) => {
+      await polly.synthesizeSpeech(params, (err, data) => {
 
-      return res.send(JSON.stringify(data));
+      let filePath = "../public/voice/";
+      let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
+
+      fs.writeFileSync(filePath + fileName, data.AudioStream);
+
+      return res.send(filePath + fileName);
 
     });
 
@@ -95,7 +100,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
   
         let filePath = "../public/voice/";
         let fileName = `${Date.now()}.mp3`; // Use current timestamp to avoid collisions
-  
+  4
         // Save the audio file
         fs.writeFileSync(filePath + fileName, data.AudioStream);
         console.log(`Successfully created audio file: ${fileName}`);

@@ -24,29 +24,12 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
-/*
-const corsOptions = {
-  origin: 'http://localhost:5173',
-  methods: 'GET,POST',
-  allowedHeaders: 'Content-Type,Authorization',
-};
-*/
 
-/*
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Allows all domains
-  next();
-});
-*/
 app.use(cors({
   origin: '*', // Allows all domains, or specify like 'http://localhost:5173'
   methods: ['GET', 'POST'], // Methods allowed
   allowedHeaders: ['Content-Type', 'Authorization'] // Allow Content-Type and other headers
 }));
-
-//app.use(cors(corsOptions));
-
-//app.options('*', cors(corsOptions)); 
 
 app.post('/api/text-to-audio-file', async (req, res) => {
   
@@ -133,7 +116,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
   
   // Start the server
   app.listen(4001, () => {
-    console.log(`Server is ready at + proccess.env.SERVER_URL `);
+    console.log(`Server is ready a` + proccess.env.SERVER_URL );
     console.log(`Server is ready at http://localhost:4001`);
     console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
   });

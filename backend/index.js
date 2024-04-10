@@ -15,7 +15,6 @@ const openai = new OpenAI({
 AWS.config.update({
   accessKeyId: process.env.ACCESS_KEY_ID, secretAccessKey: process.env.SECRET_ACCESS_KEY, region: process.env.AWS_REGION
 });
-console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
 
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} request to ${req.originalUrl} from ${req.ip}`);
@@ -69,8 +68,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
 
       try {
         fs.writeFileSync(filePath + fileName, data.AudioStream);
-        console.log(`File successfully saved to: ${filePath + fileName}`);
-
+        console.log(`File successfully saved to: ${filePath + fileName}`)
         res.send(fileName); // Send just the fileName or a relative path
 
       } catch (writeError) {
@@ -86,9 +84,7 @@ app.post('/api/text-to-audio-file', async (req, res) => {
   
   // Start the server
   app.listen(4001, () => {
-    //console.log(`Server is ready a` + proccess.env.SERVER_URL );
     console.log(`Server is ready at http://localhost:4001`);
-    console.log(`AWS Config: Region - ${process.env.AWS_REGION}`);
   });
 
   app.get('/health', (req, res) => {

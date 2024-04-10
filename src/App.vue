@@ -39,7 +39,7 @@ const runSpeechRecognition = () => {
             // Check if the audio element exists and the source is set
             if (player.value && mySource.value) {
                 
-                setTimeout(() => { player.value.play(); }, 1000); // Delay play to ensure load completes
+                setTimeout(() => { player.value.play(); }, 500); // Delay play to ensure load completes
                 
             }
         }
@@ -64,14 +64,41 @@ const runSpeechRecognition = () => {
     </div>
 
     <div>
-    <audio id="player" ref="player" :src="mySource" type="audio/mpeg" controls hidden></audio>
+    <audio id="player" crossOrigin="anonymous" ref="player" :src="mySource" type="audio/mpeg" controls hidden></audio>
     <canvas ref="canvas" />
     </div>
+
+    <div class="created_by">
+            Created by <a href="https://www.linkedin.com/in/jonaly/">Jonathan Ly</a>
+        </div>
+
+
+    <div class="disclaimer">
+        Note: It may take 30-40 seconds for the website to work!
+    </div>
+
+
+
+
+
 
 
 </template>
 
 <style>
+
+    .disclaimer{
+        display:flex;
+        justify-content: center;
+        margin-top:10px;
+        color: white;
+    }
+    .created_by{
+        display:flex;
+        justify-content: center;
+        margin-top:700px;
+        color: white;
+    }
     
     body{
         background-color: #222222
